@@ -1,4 +1,5 @@
-# Snek ###(Snake game)
+# Snek
+### (Snake game)
 
 ## Install instructions
 - Clone this repo
