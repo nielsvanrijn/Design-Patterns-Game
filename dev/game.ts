@@ -27,7 +27,7 @@ class Game{
     }
 
     restart() {
-        this.snakeHead = new Point(30, 30);
+        this.snakeHead = new Point(60, 30);
         this.snakeHead.tail = new Point(30, 30);
         this.snakeHead.tail.tail = new Point(0, 30);
 
@@ -87,7 +87,7 @@ class Game{
             this.context.fillRect(p.x, p.y, p.width-1, p.height-1);
             p = p.tail;
             
-            this.context.fillStyle = "hsl("+this.snekColor+", 100%, 50%)" ;
+            this.context.fillStyle = "hsl("+(360-this.snekColor)+", 100%, 50%)" ;
         }
 
         this.context.fillRect(this.food.x, this.food.y, this.food.width-1, this.food.height-1);
