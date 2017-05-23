@@ -1,6 +1,8 @@
-# Snek
-(Snake game)
+# Snek ###(Snake game)
 
 ## Install instructions
-```$ git clone https://github.com/nielsvanrijn/snek/
-
+- Clone this repo
+```
+$ git clone https://github.com/nielsvanrijn/snek/
+```
+- Navigate to the ```/Dist``` folder
