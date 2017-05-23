@@ -1,5 +1,6 @@
 # Snek :snake:
-My version of the classic game Snake
+My version of the classic game Snake.
+[Play](https://nielsvanrijn.github.io/snek/dist/) the game!
 
 ## Install instructions
 - Clone this repo
@@ -7,3 +8,7 @@ My version of the classic game Snake
 $ git clone https://github.com/nielsvanrijn/snek/
 ```
 - Navigate to the ```/Dist``` folder
+- Open the ```index.html```
+- Have fun
+
+## UML
