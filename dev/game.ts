@@ -5,7 +5,7 @@ class Game{
     canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
 
-    snakeHead: Point;
+    snekeHead: Point;
     food: Point;
 
     direction: Direction;
@@ -27,9 +27,9 @@ class Game{
     }
 
     restart() {
-        this.snakeHead = new Point(60, 30);
-        this.snakeHead.tail = new Point(30, 30);
-        this.snakeHead.tail.tail = new Point(0, 30);
+        this.snekeHead = new Point(60, 30);
+        this.snekeHead.tail = new Point(30, 30);
+        this.snekeHead.tail.tail = new Point(0, 30);
 
         this.direction = Direction.Right;
 
@@ -46,19 +46,19 @@ class Game{
         this.draw();
     }
 
-    snakeOutsideBounds(): boolean {
-        return  (this.snakeHead.x < 0 ||
-                this.snakeHead.y < 0 ||
-                this.snakeHead.x + this.snakeHead.width > this.canvas.width ||
-                this.snakeHead.y + this.snakeHead.height > this.canvas.height);
+    snekOutsideBounds(): boolean {
+        return  (this.snekeHead.x < 0 ||
+                this.snekeHead.y < 0 ||
+                this.snekeHead.x + this.snekeHead.width > this.canvas.width ||
+                this.snekeHead.y + this.snekeHead.height > this.canvas.height);
     }
 
-    snakeTouchingItself(): boolean {
-        var p = this.snakeHead.tail;
+    snekTouchingItself(): boolean {
+        var p = this.snekeHead.tail;
 
         while (p != null) {
-            if (p.x == this.snakeHead.x &&
-                p.y == this.snakeHead.y) return true;
+            if (p.x == this.snekeHead.x &&
+                p.y == this.snekeHead.y) return true;
 
             p = p.tail;
         }
@@ -67,13 +67,13 @@ class Game{
     }
 
     gameOver(): boolean {
-        return this.snakeOutsideBounds() || this.snakeTouchingItself();
+        return this.snekOutsideBounds() || this.snekTouchingItself();
     }
     private snekColor = 0;
     draw() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        var p = this.snakeHead;
+        var p = this.snekeHead;
 
         while (p != null) {
             
@@ -96,8 +96,8 @@ class Game{
 
     move() {
 
-        var xNew = this.snakeHead.x;
-        var yNew = this.snakeHead.y;
+        var xNew = this.snekeHead.x;
+        var yNew = this.snekeHead.y;
 
         switch (this.direction) {
             case Direction.Left:
@@ -121,9 +121,9 @@ class Game{
             this.eat();
         }
         else {
-            this.snakeHead.tail.moveToPoint(this.snakeHead);
-            this.snakeHead.x = xNew;
-            this.snakeHead.y = yNew;
+            this.snekeHead.tail.moveToPoint(this.snekeHead);
+            this.snekeHead.x = xNew;
+            this.snekeHead.y = yNew;
         }
     }
     
@@ -144,8 +144,8 @@ class Game{
     }
     
     eat() {
-        this.food.tail = this.snakeHead;
-        this.snakeHead = this.food;
+        this.food.tail = this.snekeHead;
+        this.snekeHead = this.food;
 
         this.placeFood();
     }
@@ -169,18 +169,18 @@ class Game{
             a[i] = new Point(x, y);
         }
 
-        var snakeParts: Point[] = new Array();
-        var p = this.snakeHead;
+        var snekParts: Point[] = new Array();
+        var p = this.snekeHead;
 
         while (p != null) {
-            snakeParts.push(p);
+            snekParts.push(p);
             p = p.tail;
         }
 
         var validPoints: Point[] = new Array();
 
         for (var i = 0; i < a.length; i++) {
-            if (!this.pointInArray(a[i], snakeParts)) validPoints.push(a[i]);
+            if (!this.pointInArray(a[i], snekParts)) validPoints.push(a[i]);
         }
 
         var newPointIndex = this.randomInt(validPoints.length - 1, 0);

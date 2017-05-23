@@ -19,9 +19,9 @@ var Game = (function () {
         setInterval(function () { return game.loop(); }, 100);
     };
     Game.prototype.restart = function () {
-        this.snakeHead = new Point(60, 30);
-        this.snakeHead.tail = new Point(30, 30);
-        this.snakeHead.tail.tail = new Point(0, 30);
+        this.snekeHead = new Point(60, 30);
+        this.snekeHead.tail = new Point(30, 30);
+        this.snekeHead.tail.tail = new Point(0, 30);
         this.direction = Direction.Right;
         this.placeFood();
     };
@@ -32,28 +32,28 @@ var Game = (function () {
         }
         this.draw();
     };
-    Game.prototype.snakeOutsideBounds = function () {
-        return (this.snakeHead.x < 0 ||
-            this.snakeHead.y < 0 ||
-            this.snakeHead.x + this.snakeHead.width > this.canvas.width ||
-            this.snakeHead.y + this.snakeHead.height > this.canvas.height);
+    Game.prototype.snekOutsideBounds = function () {
+        return (this.snekeHead.x < 0 ||
+            this.snekeHead.y < 0 ||
+            this.snekeHead.x + this.snekeHead.width > this.canvas.width ||
+            this.snekeHead.y + this.snekeHead.height > this.canvas.height);
     };
-    Game.prototype.snakeTouchingItself = function () {
-        var p = this.snakeHead.tail;
+    Game.prototype.snekTouchingItself = function () {
+        var p = this.snekeHead.tail;
         while (p != null) {
-            if (p.x == this.snakeHead.x &&
-                p.y == this.snakeHead.y)
+            if (p.x == this.snekeHead.x &&
+                p.y == this.snekeHead.y)
                 return true;
             p = p.tail;
         }
         return false;
     };
     Game.prototype.gameOver = function () {
-        return this.snakeOutsideBounds() || this.snakeTouchingItself();
+        return this.snekOutsideBounds() || this.snekTouchingItself();
     };
     Game.prototype.draw = function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        var p = this.snakeHead;
+        var p = this.snekeHead;
         while (p != null) {
             this.context.fillStyle = "hsl(" + this.snekColor + ", 100%, 50%)";
             if (this.snekColor < 360) {
@@ -69,8 +69,8 @@ var Game = (function () {
         this.context.fillRect(this.food.x, this.food.y, this.food.width - 1, this.food.height - 1);
     };
     Game.prototype.move = function () {
-        var xNew = this.snakeHead.x;
-        var yNew = this.snakeHead.y;
+        var xNew = this.snekeHead.x;
+        var yNew = this.snekeHead.y;
         switch (this.direction) {
             case Direction.Left:
                 xNew -= this.tileSize;
@@ -92,9 +92,9 @@ var Game = (function () {
             this.eat();
         }
         else {
-            this.snakeHead.tail.moveToPoint(this.snakeHead);
-            this.snakeHead.x = xNew;
-            this.snakeHead.y = yNew;
+            this.snekeHead.tail.moveToPoint(this.snekeHead);
+            this.snekeHead.x = xNew;
+            this.snekeHead.y = yNew;
         }
     };
     Game.prototype.moveLeft = function () {
@@ -114,8 +114,8 @@ var Game = (function () {
             this.direction = Direction.Down;
     };
     Game.prototype.eat = function () {
-        this.food.tail = this.snakeHead;
-        this.snakeHead = this.food;
+        this.food.tail = this.snekeHead;
+        this.snekeHead = this.food;
         this.placeFood();
     };
     Game.prototype.randomInt = function (upperRange, lowerRange) {
@@ -132,15 +132,15 @@ var Game = (function () {
             }
             a[i] = new Point(x, y);
         }
-        var snakeParts = new Array();
-        var p = this.snakeHead;
+        var snekParts = new Array();
+        var p = this.snekeHead;
         while (p != null) {
-            snakeParts.push(p);
+            snekParts.push(p);
             p = p.tail;
         }
         var validPoints = new Array();
         for (var i = 0; i < a.length; i++) {
-            if (!this.pointInArray(a[i], snakeParts))
+            if (!this.pointInArray(a[i], snekParts))
                 validPoints.push(a[i]);
         }
         var newPointIndex = this.randomInt(validPoints.length - 1, 0);
