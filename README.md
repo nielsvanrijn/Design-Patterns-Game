@@ -1,5 +1,5 @@
 # Snek :snake:
-My version of the classic game Snake. </br>
+My version of the classic game [Snake](https://en.wikipedia.org/wiki/Snake_(video_game)). </br>
 [Play](https://nielsvanrijn.github.io/snek/dist/) the game!
 
 ## Install instructions
