@@ -1,18 +1,17 @@
 /// <reference path="Piece.ts"/>
 
+enum Direction {
+    Left, Right, Up, Down
+}
+
 class Snek extends Piece {
-
-    private game: Game;
-    private food: Food;
-
     public snekHead: Piece;
     public snekColor = 0;
 
     private direction: Direction;
 
-    constructor(game:Game){
-        super(0,0)
-        this.game = game;
+    constructor(){
+        super(0,0);
     }
 
     public restart(){
@@ -24,29 +23,30 @@ class Snek extends Piece {
     }
 
     public move() {
+        let g : Game = Game.getInstance();
 
-        var xNew = this.snekHead.x;
-        var yNew = this.snekHead.y;
+        let xNew = this.snekHead.x;
+        let yNew = this.snekHead.y;
 
         switch (this.direction) {
             case Direction.Left:
-                xNew -= this.game.tileSize;
+                xNew -= g.tileSize;
                 break;
             case Direction.Right:
-                xNew += this.game.tileSize;
+                xNew += g.tileSize;
                 break;
             case Direction.Up:
-                yNew -= this.game.tileSize;
+                yNew -= g.tileSize;
                 break;
             case Direction.Down:
-                yNew += this.game.tileSize;
+                yNew += g.tileSize;
                 break;
             default:
                 break;
         }
 
-        if (xNew == this.game.food.x &&
-            yNew == this.game.food.y) {
+        if (xNew == g.food.x &&
+            yNew == g.food.y) {
             this.eat();
         }
         else {
@@ -72,11 +72,12 @@ class Snek extends Piece {
         if (this.direction != Direction.Up) this.direction = Direction.Down;
     }
     
-    eat() {        
-        this.game.food.tail = this.snekHead;
-        this.snekHead = this.game.food;
+    eat() {
+        let g : Game = Game.getInstance();
+        g.food.tail = this.snekHead;
+        this.snekHead = g.food;
 
-        this.game.placeFood();
+        g.placeFood();
     }
     
 }

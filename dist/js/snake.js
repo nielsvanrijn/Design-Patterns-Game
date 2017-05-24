@@ -1,14 +1,19 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var Piece = (function () {
     function Piece(x, y) {
-        this.x = x;
-        this.y = y;
         this.width = 30;
         this.height = 30;
+        this.x = x;
+        this.y = y;
     }
     Piece.prototype.moveToPoint = function (p) {
         if (this.tail != null) {
@@ -21,18 +26,24 @@ var Piece = (function () {
 }());
 var Food = (function (_super) {
     __extends(Food, _super);
-    function Food(game) {
-        _super.call(this, 0, 0);
-        this.game = game;
+    function Food() {
+        return _super.call(this, 0, 0) || this;
     }
     return Food;
 }(Piece));
+var Direction;
+(function (Direction) {
+    Direction[Direction["Left"] = 0] = "Left";
+    Direction[Direction["Right"] = 1] = "Right";
+    Direction[Direction["Up"] = 2] = "Up";
+    Direction[Direction["Down"] = 3] = "Down";
+})(Direction || (Direction = {}));
 var Snek = (function (_super) {
     __extends(Snek, _super);
-    function Snek(game) {
-        _super.call(this, 0, 0);
-        this.snekColor = 0;
-        this.game = game;
+    function Snek() {
+        var _this = _super.call(this, 0, 0) || this;
+        _this.snekColor = 0;
+        return _this;
     }
     Snek.prototype.restart = function () {
         this.snekHead = new Piece(60, 30);
@@ -41,26 +52,27 @@ var Snek = (function (_super) {
         this.direction = Direction.Right;
     };
     Snek.prototype.move = function () {
+        var g = Game.getInstance();
         var xNew = this.snekHead.x;
         var yNew = this.snekHead.y;
         switch (this.direction) {
             case Direction.Left:
-                xNew -= this.game.tileSize;
+                xNew -= g.tileSize;
                 break;
             case Direction.Right:
-                xNew += this.game.tileSize;
+                xNew += g.tileSize;
                 break;
             case Direction.Up:
-                yNew -= this.game.tileSize;
+                yNew -= g.tileSize;
                 break;
             case Direction.Down:
-                yNew += this.game.tileSize;
+                yNew += g.tileSize;
                 break;
             default:
                 break;
         }
-        if (xNew == this.game.food.x &&
-            yNew == this.game.food.y) {
+        if (xNew == g.food.x &&
+            yNew == g.food.y) {
             this.eat();
         }
         else {
@@ -86,36 +98,38 @@ var Snek = (function (_super) {
             this.direction = Direction.Down;
     };
     Snek.prototype.eat = function () {
-        this.game.food.tail = this.snekHead;
-        this.snekHead = this.game.food;
-        this.game.placeFood();
+        var g = Game.getInstance();
+        g.food.tail = this.snekHead;
+        this.snekHead = g.food;
+        g.placeFood();
     };
     return Snek;
 }(Piece));
-var Direction;
-(function (Direction) {
-    Direction[Direction["Left"] = 0] = "Left";
-    Direction[Direction["Right"] = 1] = "Right";
-    Direction[Direction["Up"] = 2] = "Up";
-    Direction[Direction["Down"] = 3] = "Down";
-})(Direction || (Direction = {}));
 var Game = (function () {
-    function Game(canvas) {
+    function Game() {
         var _this = this;
         this.pauseDuration = 200;
-        window.addEventListener("keydown", function (e) { return _this.keyboardListener(e); });
+        var canvas = document.getElementById('game-canvas');
         this.canvas = canvas;
         this.canvas.width = 600;
         this.canvas.height = 600;
         this.context = this.canvas.getContext("2d");
         this.tileSize = 30;
-        this.snek = new Snek(this);
-        this.food = new Food(this);
+        this.snek = new Snek();
+        this.food = new Food();
+        window.addEventListener("keydown", function (e) { return _this.keyboardListener(e); });
         this.start();
     }
+    Game.getInstance = function () {
+        if (!Game.instance) {
+            Game.instance = new Game();
+        }
+        return Game.instance;
+    };
     Game.prototype.start = function () {
+        var _this = this;
         this.restart();
-        setInterval(function () { return game.loop(); }, this.pauseDuration);
+        setInterval(function () { return _this.loop(); }, this.pauseDuration);
     };
     Game.prototype.restart = function () {
         this.snek.restart();
@@ -189,11 +203,9 @@ var Game = (function () {
     };
     return Game;
 }());
-var game;
-window.onload = function () {
-    var el = document.getElementById('game-canvas');
-    game = new Game(el);
-};
+window.addEventListener("load", function () {
+    Game.getInstance();
+});
 var Util = (function () {
     function Util() {
     }

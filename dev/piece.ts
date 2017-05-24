@@ -3,16 +3,14 @@ class Piece {
     public x: number;
     public y: number;
 
-    public width: number;
-    public height: number;
+    public width: number = 30;
+    public height: number = 30;
 
     public tail: Piece;
 
     constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.width = 30;
-        this.height = 30;
     }
 
     moveToPoint(p: Piece) {

@@ -1,9 +1,8 @@
 /// <reference path="snek.ts"/>
-enum Direction {
-    Left, Right, Up, Down
-}
+
 class Game{
     private static instance: Game;
+
     public canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
     
@@ -12,30 +11,46 @@ class Game{
 
     public snek: Snek;
     public food: Piece;
-    private util: Util
 
-    constructor(canvas: HTMLCanvasElement) {
-        window.addEventListener("keydown", (e: KeyboardEvent) => this.keyboardListener(e));
+    //Get Instance of game or create one (SingleTon)
+    public static getInstance() {
+        if (!Game.instance) {
+            Game.instance = new Game();
+        }
+        return Game.instance;
+    }
 
+    private constructor() {
+        //Main Canvas of the game
+        let canvas = <HTMLCanvasElement> document.getElementById('game-canvas');
+
+        // Create Canvas
         this.canvas = canvas;
         this.canvas.width = 600;
         this.canvas.height = 600;
         this.context = this.canvas.getContext("2d");
 
+        // Tilesize is based on canvas size. 600/30 means 20x20 grid
         this.tileSize = 30;
 
-        this.snek = new Snek(this);
-        this.food = new Food(this);
+        // Create net instances of snek & food
+        this.snek = new Snek();
+        this.food = new Food();
 
+        // Listen to keyboard input
+        window.addEventListener("keydown", (e: KeyboardEvent) => this.keyboardListener(e));
+
+        // Start te game
         this.start();
     }
 
     private start() {
         this.restart();
-        setInterval(() => game.loop(), this.pauseDuration);
+        setInterval(() => this.loop(), this.pauseDuration);
     }
 
     private restart() {
+        // This restart function will spawn the snek & place a food somewhere on the grid
         this.snek.restart();
         this.placeFood();
     }
@@ -52,36 +67,35 @@ class Game{
 
     public placeFood() {
 
-        var noOfTiles = (this.canvas.width / this.tileSize) * (this.canvas.height / this.tileSize);
+        let noOfTiles = (this.canvas.width / this.tileSize) * (this.canvas.height / this.tileSize);
 
         var a: Piece[] = new Array(noOfTiles);
 
-        for (var i = 0; i < noOfTiles; i++) {
-            var x = (i % (this.canvas.width / this.tileSize)) * this.tileSize;
-            var y = (Math.floor(i / (this.canvas.width / this.tileSize))) * this.tileSize;
+        for (let i = 0; i < noOfTiles; i++) {
+            let x = (i % (this.canvas.width / this.tileSize)) * this.tileSize;
+            let y = (Math.floor(i / (this.canvas.width / this.tileSize))) * this.tileSize;
             if (i == 799) {
-                var b = i;
+                let b = i;
             }
             a[i] = new Piece(x, y);
         }
 
         var snekParts: Piece[] = new Array();
-        var p = this.snek.snekHead;
+        let p = this.snek.snekHead;
 
         while (p != null) {
             snekParts.push(p);
             p = p.tail;
         }
 
-        var validPoints: Piece[] = new Array();
+        let validPoints: Piece[] = new Array();
 
-        for (var i = 0; i < a.length; i++) {
+        for (let i = 0; i < a.length; i++) {
             if (!Util.pointInArray(a[i], snekParts)) validPoints.push(a[i]);
         }
 
-        var newPointIndex = Util.randomInt(validPoints.length - 1, 0);
+        let newPointIndex = Util.randomInt(validPoints.length - 1, 0);
         this.food = validPoints[newPointIndex];
-        //this.food = <Food>validPoints[newPointIndex];
     }
 
     private gameOver(): boolean {
@@ -129,10 +143,7 @@ class Game{
 
 }
 
-var game: Game;
-
-//load
-window.onload = () => {
-    var el = <HTMLCanvasElement> document.getElementById('game-canvas');
-    game = new Game(el);
-};
+// load game
+window.addEventListener("load", function () {
+    Game.getInstance();
+});
