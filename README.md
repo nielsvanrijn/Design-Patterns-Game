@@ -13,3 +13,8 @@ $ git clone https://github.com/nielsvanrijn/snek/
 
 ## UML
 ![uml](http://i.imgur.com/DR2Qdqz.png)
+
+## Components
+- Static Utility Method ```/dev/util.ts```
+- Singleton ```/dev/game.ts``` at line ```134```
+- Inheritance: Both ```/dev/snek.ts``` and ```/dev/food.ts``` are children of ```/dev/piece.ts```
