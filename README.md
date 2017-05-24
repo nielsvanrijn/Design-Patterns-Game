@@ -12,3 +12,4 @@ $ git clone https://github.com/nielsvanrijn/snek/
 - Have fun
 
 ## UML
+![uml](https://drive.google.com/file/d/0BxykGWzbn8gEaUpNU1dRVkcwWDQ/view?usp=sharing)
