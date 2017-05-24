@@ -1,12 +1,12 @@
-class Point {
+class Piece {
 
-    x: number;
-    y: number;
+    public x: number;
+    public y: number;
 
-    width: number;
-    height: number;
+    public width: number;
+    public height: number;
 
-    tail: Point;
+    public tail: Piece;
 
     constructor(x: number, y: number) {
         this.x = x;
@@ -15,7 +15,7 @@ class Point {
         this.height = 30;
     }
 
-    moveToPoint(p: Point) {
+    moveToPoint(p: Piece) {
         if (this.tail != null) {
             this.tail.moveToPoint(this);
         }
